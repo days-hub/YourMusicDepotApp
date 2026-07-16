@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="YourMusicDepotApp.Views.InstructorsView"
+             xmlns:vm="clr-namespace:YourMusicDepotApp.ViewModels"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <!-- Sidebar for Add and List -->
+            <ColumnDefinition Width="*"/>
+            <!-- Detail View -->
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title and Search Bar -->
+            <RowDefinition Height="*"/>
+            <!-- List and Detail View -->
+        </Grid.RowDefinitions>
+
+        <!-- Title and Search Bar with Icons -->
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+                <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/instructors.png" Width="50" Height="50" Margin="0,0,5,0"/>
+                <TextBlock Text="Instructors"
+                   FontWeight="Bold"
+                   FontSize="24"
+                   Foreground="Black"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/Search.png" Width="35" Height="35" Margin="0,0,5,0"/>
+                <TextBox Width="200"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        <!-- Add Instructor Button and Instructors List -->
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <Button Command="{Binding OpenAddInstructorWindowCommand}"
+                Content="Add Instructor"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,10"/>
+            <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ListView ItemsSource="{Binding Instructors}"
+                  SelectedItem="{Binding SelectedInstructor}"
+                  Margin="0" Padding="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Margin" Value="5"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding InstructorFirstName}" FontWeight="Bold" FontSize="16" Margin="5,0"/>
+                                    <TextBlock Text="{Binding InstructorLastName}" FontWeight="Bold" FontSize="16" Margin="5,0"/>
+                                  
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
+        <!-- Instructor Detail View -->
+        <md:Card Grid.Row="1" Grid.Column="1"
+                 Background="#27F1C1"
+                 Margin="16" Padding="16" 
+                 md:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Image -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Image -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Name -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Last Taught Student -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Availability -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Credentials -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Phone -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Email -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Buttons -->
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+
+
+                <TextBlock Grid.Row="0" Text="Instructor Detailed View"
+                   FontWeight="Bold"
+                   FontSize="18"
+                   HorizontalAlignment="Left" 
+                   Margin="0,0,0,90"/>
+                <Image Grid.Row="1" Source="{Binding SelectedInstructor.ProfilePicturePath}"
+                   Width="200"
+                   Height="200"
+                   HorizontalAlignment="Center"/>
+
+
+                <!-- Instructor Name with Icon -->
+                <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="45" HorizontalAlignment="Left">
+                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/NameIcon.png" Width="32" Height="32"/>
+                    <TextBlock Text="Name: " FontWeight="Bold" FontSize="16"  Margin="5,0"/>
+                    <TextBlock Text="{Binding SelectedInstructor.FullName}" FontSize="16"/>
+                </StackPanel>
+                <!-- Last Taught Student with Icon -->
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="45" HorizontalAlignment="Right">
+                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/CapIcon.png" Width="32" Height="32"/>
+                    <TextBlock Text="Last Student: " FontWeight="Bold" FontSize="16" Margin="5,0"/>
+                    <TextBlock Text="{Binding SelectedInstructor.LastTaughtStudentName}" FontSize="14"/>
+                </StackPanel>
+
+                <!-- Instructor Availability with Icon -->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="45" HorizontalAlignment="Left" >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/CalendarIcon.png" Width="32" Height="32"/>
+                        <TextBlock Text="Availability: " FontWeight="Bold" FontSize="16" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding SelectedInstructor.InstructorAvailabilities}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DayOfWeek}" Margin="0,0,5,0" FontSize="14"/>
+                                    <TextBlock Text="{Binding StartTime, StringFormat='{}{0:hh\\:mm}'}" Margin="0,0,5,0" FontSize="14"/>
+                                    <TextBlock Text="-" FontSize="14"/>
+                                    <TextBlock Text="{Binding EndTime, StringFormat='{}{0:hh\\:mm}'}" Margin="5,0,0,0" FontSize="14"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Instructor Credentials with Icon -->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="45" HorizontalAlignment="Right">
+                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/CredentialsIcon.png" Width="32" Height="32"/>
+                    <TextBlock Text="Credentials: " FontWeight="Bold" FontSize="16" Margin="5,0,5,0"/>
+                    <TextBlock Text="{Binding SelectedInstructor.InstructorCredential}"
+               FontSize="16"/>
+                </StackPanel>
+
+                <!-- Instructor Phone Number with Icon -->
+                <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="45" HorizontalAlignment="Left">
+                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/PhoneIcon.png" Width="32" Height="32"/>
+                    <TextBlock Text="Phone: " FontWeight="Bold" FontSize="16" Margin="5,0,5,0"/>
+                    <TextBlock Text="{Binding SelectedInstructor.InstructorPhoneNumber}"
+               FontSize="16"/>
+                </StackPanel>
+
+
+                <!-- Instructor Email with Icon -->
+                <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="45" HorizontalAlignment="Right">
+                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/EmailIcon.png" Width="16" Height="16"/>
+                    <TextBlock Text="Email: " FontWeight="Bold" FontSize="16" Margin="5,0,5,0"/>
+                    <TextBlock Text="{Binding SelectedInstructor.InstructorEmail}"
+               FontSize="16"/>
+                </StackPanel>
+                <!-- Edit, Delete, View Schedule Buttons -->
+                <StackPanel Grid.Row="9" Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="20,10,20,10">
+                    <Button Command="{Binding EditInstructorCommand}" 
+                    Content="Edit" 
+                   
+                    Margin="5" />
+                    <Button Command="{Binding DeleteInstructorCommand}" 
+                    Content="Delete" 
+          
+                    Margin="5" />
+                </StackPanel>
+            </Grid>
+        </md:Card>
+    </Grid>
+</UserControl>

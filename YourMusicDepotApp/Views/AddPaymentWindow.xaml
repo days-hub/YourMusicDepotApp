@@ -1,0 +1,50 @@
+﻿<Window x:Class="YourMusicDepotApp.Views.AddPaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Icon="pack://application:,,,/YourMusicDepotApp;component/Icons/YourMusicNoteIcon.png"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Payment" Height="500" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Lesson Dropdown Label -->
+            <RowDefinition Height="Auto"/>
+            <!-- Lesson Dropdown -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Amount Label -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Amount TextBox -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Date Label -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Date DatePicker -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Type Label -->
+            <RowDefinition Height="Auto"/>
+            <!-- Payment Type TextBox -->
+            <RowDefinition Height="Auto"/>
+            <!-- Save Button -->
+        </Grid.RowDefinitions>
+
+        <!-- Lessons without Payments Dropdown -->
+        <TextBlock Grid.Row="0" Text="Lesson:" Margin="5"/>
+        <ComboBox Grid.Row="1" Margin="5" 
+                  ItemsSource="{Binding LessonsWithoutPayments}" 
+                  DisplayMemberPath="Student.FullName"
+                  SelectedItem="{Binding SelectedLesson}"/>
+
+        <!-- Payment Amount -->
+        <TextBlock Grid.Row="2" Text="Payment Amount:" Margin="5"/>
+        <TextBox Grid.Row="3" Margin="5" Text="{Binding PaymentAmount, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- Payment Date -->
+        <TextBlock Grid.Row="4" Text="Payment Date:" Margin="5"/>
+        <DatePicker Grid.Row="5" Margin="5" SelectedDate="{Binding PaymentDate}"/>
+
+        <!-- Payment Type -->
+        <TextBlock Grid.Row="6" Text="Payment Type:" Margin="5"/>
+        <TextBox Grid.Row="7" Margin="5" Text="{Binding PaymentType, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- Save Button -->
+        <Button Grid.Row="8" Margin="5" Content="Save" Command="{Binding SavePaymentCommand}"/>
+    </Grid>
+</Window>

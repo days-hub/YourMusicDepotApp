@@ -1,0 +1,38 @@
+﻿<Window x:Class="YourMusicDepotApp.Views.AddStudentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Icon="pack://application:,,,/YourMusicDepotApp;component/Icons/YourMusicNoteIcon.png"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Student" Height="550" Width="800">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="First Name:" />
+            <TextBox Text="{Binding NewStudentFirstName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Last Name:" />
+            <TextBox Text="{Binding NewStudentLastName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Phone Number:" />
+            <TextBox Text="{Binding NewStudentPhoneNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Email:" />
+            <TextBox Text="{Binding NewStudentEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Instrument:" />
+            <TextBox Text="{Binding NewStudentInstrument, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Skill Level:" />
+            <TextBox Text="{Binding NewStudentSkillLevel, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Age:" />
+            <TextBox Text="{Binding NewStudentAge, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+            <TextBlock Text="Account Password:" />
+            <PasswordBox Name="PasswordBox" Margin="0,5" PasswordChanged="PasswordBox_PasswordChanged" />
+
+
+
+            <!-- Save button -->
+            <Button Content="Save" Command="{Binding AddNewStudentCommand}" Margin="10,20" HorizontalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</Window>

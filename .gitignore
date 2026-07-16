@@ -1,0 +1,23 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local configuration (secrets, machine-specific overrides)
+appsettings.local.json
+.claude/
+
+# Archives / backups
+*.zip
+
+# OS files
+Thumbs.db
+Desktop.ini

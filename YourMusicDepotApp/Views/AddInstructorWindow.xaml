@@ -1,0 +1,38 @@
+﻿<Window x:Class="YourMusicDepotApp.Views.AddInstructorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Icon="pack://application:,,,/YourMusicDepotApp;component/Icons/YourMusicNoteIcon.png"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Instructor" Height="550" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="First Name" Grid.Row="0" Margin="10"/>
+        <TextBox x:Name="FirstNameTextBox" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="10"/>
+
+        <Label Content="Last Name" Grid.Row="2" Margin="10"/>
+        <TextBox x:Name="LastNameTextBox" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Margin="10"/>
+
+        <Label Content="Credentials" Grid.Row="4" Margin="10"/>
+        <TextBox x:Name="CredentialsTextBox" Text="{Binding Credentials, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Margin="10"/>
+
+        <Label Content="Phone Number" Grid.Row="6" Margin="10"/>
+        <TextBox x:Name="PhoneNumberTextBox" Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Margin="10"/>
+
+        <Label Content="Email" Grid.Row="8" Margin="10"/>
+        <TextBox x:Name="EmailTextBox" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Row="9" Margin="10"/>
+
+        <Button Content="Add" Command="{Binding AddInstructorCommand}" Grid.Row="10" Margin="10,20,10,10" Width="100"/>
+    </Grid>
+</Window>

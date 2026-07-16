@@ -1,0 +1,42 @@
+﻿<Window x:Class="YourMusicDepotApp.Views.EditPaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Icon="pack://application:,,,/YourMusicDepotApp;component/Icons/YourMusicNoteIcon.png"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YourMusicDepotApp.Views"
+        mc:Ignorable="d"
+        Title="Edit Payment" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Label for Payment Amount -->
+        <Label Grid.Row="0" Content="Payment Amount:" Margin="5"/>
+
+        <!-- Payment Amount Input -->
+        <TextBox Grid.Row="1" Margin="5" 
+                 Text="{Binding MusicLessonPaymentAmount, UpdateSourceTrigger=PropertyChanged}" />
+
+        <!-- Label for Payment Date -->
+        <Label Grid.Row="2" Content="Payment Date:" Margin="5"/>
+
+        <!-- Payment Date Input -->
+        <DatePicker Grid.Row="3" Margin="5" 
+                    SelectedDate="{Binding MusicLessonPaymentDate}" />
+
+        <!-- Label for Payment Type -->
+        <Label Grid.Row="4" Content="Payment Type:" Margin="5"/>
+
+        <!-- Payment Type Input -->
+        <TextBox Grid.Row="5" Margin="5" 
+                 Text="{Binding MusicLessonPaymentType, UpdateSourceTrigger=PropertyChanged}" />
+
+    </Grid>
+</Window>

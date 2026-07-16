@@ -1,0 +1,161 @@
+﻿<UserControl x:Class="YourMusicDepotApp.Views.SchedulingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:converters="clr-namespace:YourMusicDepotApp.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+   
+    <UserControl.Resources>
+        <converters:RoomCapacityCountConverter x:Key="RoomCapacityCountConverter"/>
+        <converters:RoomCapacityConverter x:Key="RoomCapacityConverter"/>
+        <!-- New CalendarDayButton style with triggers -->
+        <Style x:Key="DataGridCenteringStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Row for Title and Search Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Fixed height row for Calendar -->
+            <RowDefinition Height="*"/>
+            <!-- Remaining space for DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row for Action Buttons -->
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/scheduling.png" Width="24" Height="24" Margin="10,10,5,10"/>
+                <TextBlock Text="Scheduling" FontWeight="Bold" FontSize="24" Margin="0,10"/>
+            </StackPanel>
+            
+            
+        </StackPanel>
+        <TabControl Grid.Row="1" Grid.RowSpan="2">
+            <TabItem Header="Scheduling">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row for Search -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row for Calendar -->
+                        <RowDefinition Height="*"/>
+                        <!-- Row for DataGrid -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row for Buttons -->
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/Search.png" Width="24" Height="24" Margin="10,10,5,10"/>
+                        <TextBox Margin="10,10,5,10" Width="200" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Search" Command="{Binding SearchDateCommand}" Margin="0,10"/>
+                    </StackPanel>
+                    <!-- Calendar stretches by setting HorizontalAlignment to Stretch -->
+        <Calendar x:Name="MaterialCalendar" Grid.Row="1" Style="{StaticResource MaterialDesignCalendarPortrait}" Margin="10" SelectedDatesChanged="Calendar_SelectedDatesChanged">
+            
+            <Calendar.Resources>
+                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#27F1C1" />
+                <SolidColorBrush x:Key="MaterialDesignBody" Color="Black" />
+              
+                <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="Black"/>
+
+                
+            </Calendar.Resources>
+        </Calendar>
+
+        <!-- DataGrid to display lesson details -->
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding MusicLessons}" 
+          SelectedItem="{Binding SelectedMusicLesson, Mode=TwoWay}"
+          IsReadOnly="True"        
+          Margin="10" MaxHeight="300">
+            <DataGrid.Columns>
+                <!-- Updated column for sequential lesson numbers -->
+                            <DataGridTextColumn Header="Lesson" Binding="{Binding LessonNumber}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
+                            <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor.FullName}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
+                            <DataGridTextColumn Header="Students" Binding="{Binding Student.FullName}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
+                            <DataGridTextColumn Header="Time" Binding="{Binding MusicLessonStartDateTime, StringFormat='{}{0:HH:mm}'}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
+                            <DataGridTextColumn Header="Room" Binding="{Binding Room.RoomID}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
+                            <DataGridTextColumn Header="Room Capacity" ElementStyle="{StaticResource DataGridCenteringStyle}">
+                                <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource RoomCapacityConverter}">
+                            <Binding Path="Room.RoomSize"/>
+                            
+                            <Binding Path="CurrentRoomCapacityCount"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Status" Binding="{Binding MusicLessonStatus}" />
+            </DataGrid.Columns>
+        </DataGrid>
+                    <!-- Action Buttons -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                       
+                        <Button Content="Edit" Command="{Binding EditLessonCommand}" Margin="5" />
+                        <Button Content="Delete" Command="{Binding DeleteLessonCommand}" Margin="5" />
+                        <Button Content="Add Lesson" Command="{Binding AddLessonCommand}" Margin="5" />
+                    </StackPanel>
+
+        </Grid>
+    </TabItem>
+            <!-- New tab for Instructor and Student weekly schedule -->
+            <TabItem Header="WeeklyScheduleTab" x:Name="WeeklyScheduleTab">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- Row for Legend -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Row for Search -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        
+                        <RowDefinition Height="*"/>
+                        <!-- Row for the Schedule View -->
+                    </Grid.RowDefinitions>
+                    <!-- Legend for the Schedule -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
+                        <TextBlock Text="Legend:" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <Border Background="Green" Width="15" Height="15" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Scheduled" VerticalAlignment="Center" Margin="5,0"/>
+                        <Border Background="Blue" Width="15" Height="15" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Completed" VerticalAlignment="Center" Margin="5,0"/>
+                        <Border Background="Red" Width="15" Height="15" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Canceled" VerticalAlignment="Center" Margin="5,0"/>
+                    </StackPanel>
+
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/Search.png" Width="24" Height="24" Margin="10"/>
+                        <TextBox Margin="0,10" Width="200" Text="{Binding WeeklyScheduleSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Search" Command="{Binding SearchWeeklyScheduleCommand}" Margin="10,10,0,10"/>
+                    </StackPanel>
+
+                   
+                    <sf:SfScheduler x:Name="WeeklyScheduler"
+                            Grid.Row="2"
+                            ViewType="Week"
+                            ItemsSource="{Binding ScheduleAppointments}"
+                            Margin="10">
+                        <sf:SfScheduler.AppointmentMapping>
+                            <sf:AppointmentMapping
+                            Subject="Subject"
+                            StartTime="StartTime"
+                            EndTime="EndTime"
+                            AppointmentBackground="BackgroundColor"
+                            Foreground="ForegroundColor"/>  
+                        </sf:SfScheduler.AppointmentMapping>
+                        </sf:SfScheduler>
+                        
+                     
+                </Grid>
+            </TabItem>
+        </TabControl>
+      
+    </Grid>
+</UserControl>
