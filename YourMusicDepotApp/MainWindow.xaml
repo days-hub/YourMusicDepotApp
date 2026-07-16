@@ -1,82 +1,112 @@
-﻿<Window x:Class="YourMusicDepotApp.MainWindow"
+<Window x:Class="YourMusicDepotApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Icon="pack://application:,,,/YourMusicDepotApp;component/Icons/YTreble.png"
         xmlns:views="clr-namespace:YourMusicDepotApp.Views"
-        Title="YourMusicDepot" Height="1050" Width="1300">
+        Title="YourMusicDepot" Height="1050" Width="1300"
+        MinHeight="800" MinWidth="1150"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FontFamily="{md:MaterialDesignFont}">
 
     <Window.Resources>
-        <!-- Button Style -->
-        <Style x:Key="SidebarButton" TargetType="Button">
-            <Setter Property="Background" Value="#27F1C1"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="20"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Effect">
+        <!-- Navigation rail item: icon over label, highlight when checked -->
+        <Style x:Key="NavRailItem" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#B4AECB"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DropShadowEffect Color="Gray" Direction="320" ShadowDepth="5" BlurRadius="5" Opacity="0.5"/>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="ItemBorder"
+                                Background="Transparent"
+                                CornerRadius="10"
+                                Margin="10,4"
+                                Padding="0,10">
+                            <ContentPresenter HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#3A3153"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#4A3F6B"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <!-- Visual States for interactive feedback -->
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#35F1C1"/>
-                </Trigger>
-            </Style.Triggers>
+        </Style>
+        <Style x:Key="NavRailLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
         </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="92"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Navigation rail -->
+        <Border Grid.Column="0" Background="#2D2640">
+            <DockPanel LastChildFill="False">
+                <md:PackIcon DockPanel.Dock="Top" Kind="MusicClefTreble"
+                             Width="34" Height="34"
+                             Foreground="White"
+                             HorizontalAlignment="Center"
+                             Margin="0,18,0,22"/>
 
-        <UniformGrid Grid.Column="0" Rows="4" Background="#27F1C1">
-            <Button Style="{StaticResource SidebarButton}" Click="Instructors_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/instructors.png" Width="48" Height="48"/>
-                    <TextBlock Text="Instructors" Foreground="Black" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-            <Button Style="{StaticResource SidebarButton}" Click="Students_Click">
-                    <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/students.png" Width="48" Height="48"/>
-                    <TextBlock Text="Students" Foreground="Black" VerticalAlignment="Center"/>
+                <RadioButton DockPanel.Dock="Top" x:Name="HomeNavItem" Style="{StaticResource NavRailItem}"
+                             GroupName="Nav" Checked="Home_Click" IsChecked="True">
+                    <StackPanel>
+                        <md:PackIcon Kind="Home" Width="26" Height="26" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Home" Style="{StaticResource NavRailLabel}"/>
                     </StackPanel>
-                </Button>
-            <Button Style="{StaticResource SidebarButton}" Click="Scheduling_Click">
-                    <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/scheduling.png" Width="48" Height="48"/>
-                    <TextBlock Text="Scheduling" Foreground="Black" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            <Button Style="{StaticResource SidebarButton}" Click="Finance_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/finance.png" Width="48" Height="48"/>
-                    <TextBlock Text="Finance" Foreground="Black" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-        </UniformGrid>
+                </RadioButton>
 
-       
+                <RadioButton DockPanel.Dock="Top" Style="{StaticResource NavRailItem}"
+                             GroupName="Nav" Checked="Instructors_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="HumanMaleBoard" Width="26" Height="26" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Instructors" Style="{StaticResource NavRailLabel}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton DockPanel.Dock="Top" Style="{StaticResource NavRailItem}"
+                             GroupName="Nav" Checked="Students_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="School" Width="26" Height="26" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Students" Style="{StaticResource NavRailLabel}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton DockPanel.Dock="Top" Style="{StaticResource NavRailItem}"
+                             GroupName="Nav" Checked="Scheduling_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="CalendarMonth" Width="26" Height="26" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Scheduling" Style="{StaticResource NavRailLabel}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton DockPanel.Dock="Top" Style="{StaticResource NavRailItem}"
+                             GroupName="Nav" Checked="Finance_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="Finance" Width="26" Height="26" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Finance" Style="{StaticResource NavRailLabel}"/>
+                    </StackPanel>
+                </RadioButton>
+            </DockPanel>
+        </Border>
+
         <!-- Main content area -->
-        <StackPanel x:Name="LogoStackPanel" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/CompanyLogo.png" Width="300" Height="300"/>
-            </StackPanel>
-        </StackPanel>
-
-
-        
-        <Frame Grid.Column="1" x:Name="MainContentFrame" 
-           HorizontalAlignment="Stretch" 
-           VerticalAlignment="Stretch" 
-           ContentRendered="MainContentFrame_ContentRendered"/>
+        <Frame Grid.Column="1" x:Name="MainContentFrame"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"
+               NavigationUIVisibility="Hidden"
+               Source="Views/HomeView.xaml"/>
     </Grid>
 </Window>

@@ -1,0 +1,147 @@
+<UserControl x:Class="YourMusicDepotApp.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <Style x:Key="StatNumber" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+        <Style x:Key="StatCaption" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBodyLight}"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+        <Style x:Key="StatIconChip" TargetType="Border">
+            <Setter Property="Width" Value="52"/>
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="CornerRadius" Value="26"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24,16,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Greeting -->
+            <RowDefinition Height="Auto"/>
+            <!-- Stat cards -->
+            <RowDefinition Height="*"/>
+            <!-- Today's lessons -->
+        </Grid.RowDefinitions>
+
+        <!-- Greeting -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal">
+                <md:PackIcon Kind="MusicClefTreble" Width="30" Height="30"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                <TextBlock Text="Your Music Depot" FontSize="24" FontWeight="Medium"
+                           Margin="10,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="{Binding TodayDisplay}" FontSize="14"
+                       Foreground="{DynamicResource MaterialDesignBodyLight}"
+                       Margin="40,4,0,0"/>
+        </StackPanel>
+
+        <!-- Stat cards -->
+        <UniformGrid Grid.Row="1" Columns="4" Margin="-8,0">
+            <md:Card Margin="8" Padding="20" md:ShadowAssist.ShadowDepth="Depth1">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource StatIconChip}" Background="#EDE7F6">
+                        <md:PackIcon Kind="CalendarToday" Width="26" Height="26"
+                                     Foreground="#673AB7"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding LessonsTodayCount}" Style="{StaticResource StatNumber}"/>
+                        <TextBlock Text="Lessons Today" Style="{StaticResource StatCaption}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:Card>
+
+            <md:Card Margin="8" Padding="20" md:ShadowAssist.ShadowDepth="Depth1">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource StatIconChip}" Background="#E0F2F1">
+                        <md:PackIcon Kind="School" Width="26" Height="26"
+                                     Foreground="#00897B"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding StudentCount}" Style="{StaticResource StatNumber}"/>
+                        <TextBlock Text="Active Students" Style="{StaticResource StatCaption}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:Card>
+
+            <md:Card Margin="8" Padding="20" md:ShadowAssist.ShadowDepth="Depth1">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource StatIconChip}" Background="#FFF3E0">
+                        <md:PackIcon Kind="HumanMaleBoard" Width="26" Height="26"
+                                     Foreground="#EF6C00"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding InstructorCount}" Style="{StaticResource StatNumber}"/>
+                        <TextBlock Text="Instructors" Style="{StaticResource StatCaption}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:Card>
+
+            <md:Card Margin="8" Padding="20" md:ShadowAssist.ShadowDepth="Depth1">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource StatIconChip}" Background="#E8F5E9">
+                        <md:PackIcon Kind="CurrencyUsd" Width="26" Height="26"
+                                     Foreground="#2E7D32"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding RevenueThisMonth, StringFormat='{}{0:C0}'}" Style="{StaticResource StatNumber}"/>
+                        <TextBlock Text="Revenue This Month" Style="{StaticResource StatCaption}"/>
+                    </StackPanel>
+                </StackPanel>
+            </md:Card>
+        </UniformGrid>
+
+        <!-- Today's lessons -->
+        <md:Card Grid.Row="2" Margin="0,20,0,0" Padding="24" md:ShadowAssist.ShadowDepth="Depth1">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Today's Lessons"
+                           FontSize="18" FontWeight="Medium" Margin="0,0,0,12"/>
+                <TextBlock DockPanel.Dock="Top" Text="No lessons scheduled for today."
+                           FontSize="14"
+                           Foreground="{DynamicResource MaterialDesignBodyLight}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LessonsTodayCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <DataGrid ItemsSource="{Binding TodaysLessons}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          IsHitTestVisible="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Time" Binding="{Binding MusicLessonStartDateTime, StringFormat='{}{0:HH:mm}'}"/>
+                        <DataGridTextColumn Header="Student" Binding="{Binding Student.FullName}"/>
+                        <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor.FullName}"/>
+                        <DataGridTextColumn Header="Room" Binding="{Binding Room.RoomID}"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding MusicLessonStatus}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </md:Card>
+    </Grid>
+</UserControl>

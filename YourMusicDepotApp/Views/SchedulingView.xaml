@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:YourMusicDepotApp.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -30,13 +31,12 @@
             <!-- Row for Action Buttons -->
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/scheduling.png" Width="24" Height="24" Margin="10,10,5,10"/>
-                <TextBlock Text="Scheduling" FontWeight="Bold" FontSize="24" Margin="0,10"/>
-            </StackPanel>
-            
-            
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="16,16,16,8">
+            <md:PackIcon Kind="CalendarMonth" Width="30" Height="30"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            <TextBlock Text="Scheduling" FontSize="24" FontWeight="Medium"
+                       Margin="10,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
         <TabControl Grid.Row="1" Grid.RowSpan="2">
             <TabItem Header="Scheduling">
@@ -52,22 +52,15 @@
                         <!-- Row for Buttons -->
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/Search.png" Width="24" Height="24" Margin="10,10,5,10"/>
-                        <TextBox Margin="10,10,5,10" Width="200" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button Content="Search" Command="{Binding SearchDateCommand}" Margin="0,10"/>
+                        <TextBox Margin="10" Width="260"
+                                 md:HintAssist.Hint="Search lessons"
+                                 md:TextFieldAssist.HasClearButton="True"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Search" Command="{Binding SearchDateCommand}" Margin="0,10" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!-- Calendar stretches by setting HorizontalAlignment to Stretch -->
-        <Calendar x:Name="MaterialCalendar" Grid.Row="1" Style="{StaticResource MaterialDesignCalendarPortrait}" Margin="10" SelectedDatesChanged="Calendar_SelectedDatesChanged">
-            
-            <Calendar.Resources>
-                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#27F1C1" />
-                <SolidColorBrush x:Key="MaterialDesignBody" Color="Black" />
-              
-                <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="Black"/>
-
-                
-            </Calendar.Resources>
-        </Calendar>
+        <Calendar x:Name="MaterialCalendar" Grid.Row="1" Style="{StaticResource MaterialDesignCalendarPortrait}" Margin="10" SelectedDatesChanged="Calendar_SelectedDatesChanged"/>
 
         <!-- DataGrid to display lesson details -->
         <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding MusicLessons}" 
@@ -75,8 +68,6 @@
           IsReadOnly="True"        
           Margin="10" MaxHeight="300">
             <DataGrid.Columns>
-                <!-- Updated column for sequential lesson numbers -->
-                            <DataGridTextColumn Header="Lesson" Binding="{Binding LessonNumber}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
                             <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor.FullName}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
                             <DataGridTextColumn Header="Students" Binding="{Binding Student.FullName}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
                             <DataGridTextColumn Header="Time" Binding="{Binding MusicLessonStartDateTime, StringFormat='{}{0:HH:mm}'}" ElementStyle="{StaticResource DataGridCenteringStyle}" />
@@ -105,7 +96,7 @@
         </Grid>
     </TabItem>
             <!-- New tab for Instructor and Student weekly schedule -->
-            <TabItem Header="WeeklyScheduleTab" x:Name="WeeklyScheduleTab">
+            <TabItem Header="Weekly Schedule" x:Name="WeeklyScheduleTab">
                 <Grid>
                     <Grid.RowDefinitions>
                         <!-- Row for Legend -->
@@ -131,9 +122,12 @@
 
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="pack://application:,,,/YourMusicDepotApp;component/Icons/Search.png" Width="24" Height="24" Margin="10"/>
-                        <TextBox Margin="0,10" Width="200" Text="{Binding WeeklyScheduleSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button Content="Search" Command="{Binding SearchWeeklyScheduleCommand}" Margin="10,10,0,10"/>
+                        <TextBox Margin="0,10" Width="260"
+                                 md:HintAssist.Hint="Search weekly schedule"
+                                 md:TextFieldAssist.HasClearButton="True"
+                                 Style="{StaticResource MaterialDesignTextBox}"
+                                 Text="{Binding WeeklyScheduleSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Search" Command="{Binding SearchWeeklyScheduleCommand}" Margin="10,10,0,10" VerticalAlignment="Center"/>
                     </StackPanel>
 
                    

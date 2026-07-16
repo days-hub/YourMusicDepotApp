@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Icons\avatar-placeholder.png" />
     <None Remove="Icons\CalendarIcon.png" />
     <None Remove="Icons\CapIcon.png" />
     <None Remove="Icons\CompanyLogo.png" />
@@ -58,6 +59,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\avatar-placeholder.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Icons\CalendarIcon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
