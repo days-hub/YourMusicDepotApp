@@ -46,9 +46,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="Syncfusion.SfSchedule.WPF" Version="18.3.0.53" />
-    <PackageReference Include="Syncfusion.SfScheduler.WPF" Version="23.2.6" />
-    <PackageReference Include="Syncfusion.UI.WPF.NET" Version="23.2.6" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">

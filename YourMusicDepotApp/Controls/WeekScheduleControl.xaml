@@ -1,0 +1,34 @@
+<UserControl x:Class="YourMusicDepotApp.Controls.WeekScheduleControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <!-- Day-of-week headers -->
+                <RowDefinition Height="Auto"/>
+                <!-- Scrollable hour grid with appointments -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="HeaderGrid" Grid.Row="0" Margin="0,8,0,4"/>
+            <Border Grid.Row="0" VerticalAlignment="Bottom" Height="1" Background="#E0E0E0"/>
+
+            <ScrollViewer x:Name="BodyScrollViewer" Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid x:Name="BodyGrid"/>
+            </ScrollViewer>
+
+            <TextBlock x:Name="EmptyWeekText" Grid.Row="1"
+                       Text="No lessons scheduled this week"
+                       FontSize="14" Foreground="#9E9E9E"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Visibility="Collapsed"/>
+        </Grid>
+    </Border>
+</UserControl>

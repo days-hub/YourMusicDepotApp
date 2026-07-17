@@ -1,5 +1,4 @@
 ﻿// Import the necessary namespaces.
-using Syncfusion.Licensing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +56,12 @@ namespace YourMusicDepotApp.Views
 
             // Register an event listener for calendar date changes in the ViewModel.
             schedulingviewModel.OnCalendarDateChanged += UpdateCalendarSelectedDate;
+
+            // Reflect the ViewModel's initial date (today) in the calendar.
+            if (schedulingviewModel.SelectedDate.HasValue)
+            {
+                MaterialCalendar.SelectedDate = schedulingviewModel.SelectedDate;
+            }
         }
 
        

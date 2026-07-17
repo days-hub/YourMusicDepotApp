@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Syncfusion.Licensing;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -38,22 +36,6 @@ namespace YourMusicDepotApp
         protected override void OnStartup(StartupEventArgs e)
         {
             RegisterGlobalExceptionHandlers();
-
-            // Register the Syncfusion license if one is configured. The key is read from
-            // appsettings.local.json (not committed to source control) or the
-            // Syncfusion__LicenseKey environment variable.
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: false)
-                .AddEnvironmentVariables()
-                .Build();
-
-            var licenseKey = configuration["Syncfusion:LicenseKey"];
-            if (!string.IsNullOrWhiteSpace(licenseKey))
-            {
-                SyncfusionLicenseProvider.RegisterLicense(licenseKey);
-            }
 
             base.OnStartup(e);
         }

@@ -1,5 +1,6 @@
 ﻿// Importing necessary namespaces for functionality
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -115,6 +116,19 @@ namespace YourMusicDepotApp.ViewModels
         // Event to handle when the calendar date changes
         public event Action<DateTime> OnCalendarDateChanged;
 
+        // Dates that have at least one lesson, used to draw indicator dots on
+        // the calendar. Refreshed whenever lessons are (re)loaded.
+        private HashSet<DateTime> _lessonDates = new HashSet<DateTime>();
+        public HashSet<DateTime> LessonDates
+        {
+            get => _lessonDates;
+            private set
+            {
+                _lessonDates = value;
+                OnPropertyChanged(nameof(LessonDates));
+            }
+        }
+
         // Method to filter lessons based on the selected date
         private async void FilterLessonsOnSelectedDate()
         {
@@ -125,6 +139,9 @@ namespace YourMusicDepotApp.ViewModels
                     var filteredLessons = await _musicLessonRepository
                         .GetAllAsync()
                         .ConfigureAwait(false);
+
+                    LessonDates = new HashSet<DateTime>(
+                        filteredLessons.Select(lesson => lesson.MusicLessonStartDateTime.Date));
 
                     filteredLessons = filteredLessons
                         .Where(lesson => lesson.MusicLessonStartDateTime.Date == SelectedDate.Value.Date)
@@ -417,6 +434,7 @@ namespace YourMusicDepotApp.ViewModels
                     MusicLessons.Remove(SelectedMusicLesson); // Remove the lesson from the collection
                     UpdateRoomCapacities(); // Update room capacities after deletion
                     OnPropertyChanged(nameof(MusicLessons));
+                    FilterLessonsOnSelectedDate(); // Refresh the lesson list and calendar dots
                     MessageBox.Show("Lesson deleted successfully.");
                 }
                 catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,10 +13,10 @@ using YourMusicDepotApp.Repositories.Interfaces;
 
 namespace YourMusicDepotApp.ViewModels
 {
-  
+
     /// ViewModel for managing the weekly schedule of music lessons in the YourMusicDepot application.
     /// Implements INotifyPropertyChanged for data binding and UI updates.
- 
+
     public class WeeklyScheduleViewModel : INotifyPropertyChanged
     {
         private readonly IMusicLessonRepository _musicLessonRepository;
@@ -36,25 +36,37 @@ namespace YourMusicDepotApp.ViewModels
             }
         }
 
-        // Backing field for the selected date, used to load lessons for a specific day.
-        private DateTime _selectedDate;
-        public DateTime SelectedDate
+        // First day (Sunday) of the week currently shown in the week view.
+        private DateTime _currentWeekStart;
+        public DateTime CurrentWeekStart
         {
-            get => _selectedDate;
+            get => _currentWeekStart;
             set
             {
-                if (_selectedDate != value)
+                if (_currentWeekStart != value)
                 {
-                    _selectedDate = value;
-                    OnPropertyChanged(nameof(SelectedDate));
-                    // Load music lessons for the newly selected date.
+                    _currentWeekStart = value;
+                    OnPropertyChanged(nameof(CurrentWeekStart));
+                    OnPropertyChanged(nameof(WeekRangeText));
                 }
             }
         }
 
-      
+        // Human-readable range for the displayed week, e.g. "Jul 12 – 18, 2026".
+        public string WeekRangeText
+        {
+            get
+            {
+                var weekEnd = CurrentWeekStart.AddDays(6);
+                return CurrentWeekStart.Month == weekEnd.Month
+                    ? $"{CurrentWeekStart:MMM d} – {weekEnd:d, yyyy}"
+                    : $"{CurrentWeekStart:MMM d} – {weekEnd:MMM d, yyyy}";
+            }
+        }
+
+
         // Asynchronously loads and filters music lessons based on the provided search query.
-       
+
         // <param name="searchQuery">The query used for filtering lessons.</param>
         private async void LoadMusicLessonsFiltered(string searchQuery)
         {
@@ -69,33 +81,46 @@ namespace YourMusicDepotApp.ViewModels
             OnPropertyChanged(nameof(ScheduleAppointments));
         }
 
-        // ICommand property for executing the search action.
+        // Commands for searching and navigating between weeks.
         public ICommand SearchWeeklyScheduleCommand { get; private set; }
+        public ICommand PreviousWeekCommand { get; private set; }
+        public ICommand NextWeekCommand { get; private set; }
+        public ICommand GoToTodayCommand { get; private set; }
 
-       
+
         // Constructor for WeeklyScheduleViewModel.
         // Initializes the ViewModel and loads the weekly music lessons.
-    
+
         // <param name="musicLessonRepository">Repository for accessing music lesson data.</param>
         public WeeklyScheduleViewModel(IMusicLessonRepository musicLessonRepository)
         {
             _musicLessonRepository = musicLessonRepository;
             ScheduleAppointments = new ObservableCollection<ScheduleAppointment>();
+            _currentWeekStart = StartOfWeek(DateTime.Today);
             LoadMusicLessonsWeekly();
             InitializeCommands();
         }
 
-       
-        // Initializes the command used in the ViewModel.
-       
+
+        // Initializes the commands used in the ViewModel.
+
         private void InitializeCommands()
         {
             SearchWeeklyScheduleCommand = new RelayCommand(SearchWeeklyScheduleExecute);
+            PreviousWeekCommand = new RelayCommand(_ => CurrentWeekStart = CurrentWeekStart.AddDays(-7));
+            NextWeekCommand = new RelayCommand(_ => CurrentWeekStart = CurrentWeekStart.AddDays(7));
+            GoToTodayCommand = new RelayCommand(_ => CurrentWeekStart = StartOfWeek(DateTime.Today));
         }
 
-      
+        // Returns the Sunday on or before the given date.
+        private static DateTime StartOfWeek(DateTime date)
+        {
+            return date.Date.AddDays(-(int)date.DayOfWeek);
+        }
+
+
         // Asynchronously loads music lessons for the current week.
-      
+
         private async void LoadMusicLessonsWeekly()
         {
             var musicLessons = await _musicLessonRepository.GetAllAsync();
@@ -105,10 +130,10 @@ namespace YourMusicDepotApp.ViewModels
             OnPropertyChanged(nameof(ScheduleAppointments));
         }
 
-      
+
         // Converts a MusicLesson object to a ScheduleAppointment object for display.
-       
-       
+
+
         private ScheduleAppointment ConvertToScheduleAppointment(MusicLesson lesson)
         {
             return new ScheduleAppointment
@@ -117,16 +142,16 @@ namespace YourMusicDepotApp.ViewModels
                 EndTime = lesson.MusicLessonEndDateTime,
                 Subject = $"Lesson with {lesson.Instructor.FullName} and {lesson.Student.FullName}",
                 Status = lesson.MusicLessonStatus,
-                ForegroundColor = new SolidColorBrush(Colors.White),
-
-                // Other properties and mappings as per the ScheduleAppointment model.
+                StudentName = lesson.Student?.FullName,
+                InstructorName = lesson.Instructor?.FullName,
+                RoomLabel = lesson.Room != null ? $"Room {lesson.Room.RoomID}" : null,
             };
         }
 
-        
+
         // Executes the search command to filter lessons based on the search query.
-      
-       
+
+
         private void SearchWeeklyScheduleExecute(object parameter)
         {
             try

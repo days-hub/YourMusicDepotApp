@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Windows.Media;
 namespace YourMusicDepotApp.Models
@@ -47,23 +47,20 @@ namespace YourMusicDepotApp.Models
                 }
             }
         }
-        // Add a property for the status
+
         public string Status { get; set; }
 
-        public SolidColorBrush BackgroundColor
-        {
-            get
-            {
-                return Status switch
-                {
-                    "Scheduled" => new SolidColorBrush(Colors.Green),
-                    "Completed" => new SolidColorBrush(Colors.Blue),
-                    "Canceled" => new SolidColorBrush(Colors.Red),
-                    _ => new SolidColorBrush(Colors.Gray), // Default color
-                };
-            }
-        }
-        public Brush ForegroundColor { get; set; }
+        // Display fields for the weekly schedule cards.
+        public string StudentName { get; set; }
+        public string InstructorName { get; set; }
+        public string RoomLabel { get; set; }
+
+        // Status-derived brushes used by the week view (soft fill, colored
+        // left accent bar, dark text — same palette as the legend chips).
+        public Brush AccentBrush => LessonStatusPalette.AccentFor(Status);
+        public Brush FillBrush => LessonStatusPalette.FillFor(Status);
+        public Brush TextBrush => LessonStatusPalette.TextFor(Status);
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
