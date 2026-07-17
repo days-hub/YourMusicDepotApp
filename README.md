@@ -8,7 +8,7 @@ A Windows desktop application for managing a music lesson studio — instructors
 
 - **Instructors** — manage instructor profiles, credentials, contact info, and weekly availability; see the last student each instructor taught
 - **Students** — student roster with instrument, skill level, and progress tracking, plus full add/edit/delete and live search
-- **Scheduling** — calendar-based lesson scheduling with room assignment and capacity tracking, powered by the Syncfusion WPF Scheduler, including a weekly schedule view
+- **Scheduling** — calendar-based lesson scheduling with room assignment and capacity tracking, plus a custom-built week view with overlap-aware appointment layout
 - **Finance** — payment history per student with search, plus a revenue-over-time chart built with LiveCharts
 
 | Instructors | Scheduling |
@@ -19,12 +19,16 @@ A Windows desktop application for managing a music lesson studio — instructors
 | --- | --- |
 | ![Students](docs/screenshots/students.png) | ![Finance](docs/screenshots/finance.png) |
 
+The weekly schedule is a custom-built WPF control — a seven-day grid with an hour gutter, status-colored lesson cards, and side-by-side layout for overlapping lessons:
+
+![Weekly schedule](docs/screenshots/weekly-schedule.png)
+
 ## Tech stack
 
 - **.NET 7 / WPF** with the MVVM pattern (views, view models, and `RelayCommand` bindings)
 - **Entity Framework Core 7** with SQL Server and the repository pattern (interface-per-repository, DI-friendly)
 - **Material Design in XAML** for styling
-- **Syncfusion WPF Scheduler** for the calendar UI
+- **Custom WPF week-view scheduler control** (`Controls/WeekScheduleControl`) — no commercial component dependencies
 - **LiveCharts** for revenue visualization
 
 ## Project structure
@@ -32,6 +36,7 @@ A Windows desktop application for managing a music lesson studio — instructors
 ```
 YourMusicDepotApp/
 ├── Models/          # EF Core entities + RelayCommand
+├── Controls/        # Custom controls (week-view scheduler)
 ├── Data/            # YourMusicDepotContext (DbContext, fluent relationship config)
 ├── Repositories/    # Interfaces + implementations per aggregate
 ├── ViewModels/      # One view model per module
@@ -58,21 +63,7 @@ sqlcmd -S localhost -E -d YourMusicDepot_Database -i scripts/seed-data.sql   # o
 
 If your SQL Server instance isn't `localhost`, update the connection string in `YourMusicDepotApp/appsettings.json`.
 
-### 2. Syncfusion license (optional)
-
-The scheduler uses Syncfusion components, which are free under the [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense). Without a key the app still runs but shows a trial dialog. To register a key, create `YourMusicDepotApp/appsettings.local.json` (git-ignored):
-
-```json
-{
-  "Syncfusion": {
-    "LicenseKey": "YOUR-KEY-HERE"
-  }
-}
-```
-
-or set the `Syncfusion__LicenseKey` environment variable.
-
-### 3. Run
+### 2. Run
 
 ```powershell
 dotnet run --project YourMusicDepotApp
